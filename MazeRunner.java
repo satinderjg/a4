@@ -41,19 +41,27 @@ public class MazeRunner {
 		int fcol= finish.col;
 		System.out.println(row +' '+col);
 
-
 		if(row<0 || col<0 || row>mazeToSolve.getRows() || col>mazeToSolve.getCols()){
 			return false;
 		}
+
 		if(cur.equals(finish)){
 			mazeToSolve.setChar(row, col, 'o');
 			fileWriter.println("\n"+mazeToSolve.toString());
 			//Push
 			return true;
 		}
+
 		if(mazeToSolve.getChar(row,col)=='x' || mazeToSolve.getChar(row,col)=='H'){
 			return false;
 		}
+
+		if(mazeToSolve.getChar(row,col)=='o'){
+			//TODO:
+			mazeToSolve.setChar(row,col,'x');
+			return false;
+		}
+
 		mazeToSolve.setChar(row, col, 'o');
 		fileWriter.println("\n"+mazeToSolve.toString());
 		// push
