@@ -6,7 +6,7 @@ public class MazeRunner {
 	public MazeRunner(Maze aMaze) {
 		mazeToSolve = aMaze;
 		path = new A4Stack<MazeLocation>();
-		fileWriter = new FilePrinter();
+		fileWriter = new FilePrinter(); 
 	}
 	
 	/*
