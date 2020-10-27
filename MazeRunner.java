@@ -17,8 +17,14 @@ public class MazeRunner {
 	 */
 	public boolean solve(MazeLocation start, MazeLocation finish) {
 		fileWriter.println("Searching maze from start: "+start+" to finish: "+finish);
-		path.push(start);
+		//path.push(start);
+		//try{
 		return findPath(start, finish);
+		//}catch(Exception e){
+		//	System.out.println(e);
+		//}
+
+		//return false;
 	}
 	
 	/*
@@ -39,74 +45,103 @@ public class MazeRunner {
 
 		int frow= finish.row;
 		int fcol= finish.col;
-		System.out.println(row +' '+col);
-
-		if(row<0 || col<0 || row>mazeToSolve.getRows() || col>mazeToSolve.getCols()){
-			return false;
-		}
 
 		if(cur.equals(finish)){
 			mazeToSolve.setChar(row, col, 'o');
-			fileWriter.println("\n"+mazeToSolve.toString());
-			//Push
+			fileWriter.println("\n" +mazeToSolve.toString());
+			//Push this to stack
+			path.push(cur);
 			return true;
 		}
 
+		if(row<0 || col<0 || row>mazeToSolve.getRows() || col>mazeToSolve.getCols()){
+			//out of bound
+			//fileWriter.println("\n" + "Out of B "+"\n"+mazeToSolve.toString());
+			
+			return false;
+		}
+
+		
+
 		if(mazeToSolve.getChar(row,col)=='x' || mazeToSolve.getChar(row,col)=='H'){
+			//System.out.println("-----kkk--");
+			//fileWriter.println("\n" + "May Day "+"\n"+mazeToSolve.toString());
 			return false;
 		}
 
 		if(mazeToSolve.getChar(row,col)=='o'){
-			//TODO:
-			mazeToSolve.setChar(row,col,'x');
+			//fileWriter.println("\n" + "opps "+"\n"+mazeToSolve.toString());
+			
+			// Don't try this path try something else bro !
+			//mazeToSolve.setChar(row,col,'x');
+			//fileWriter.println("\n"+mazeToSolve.toString());
 			return false;
 		}
-
+		// Push this to stack
 		mazeToSolve.setChar(row, col, 'o');
-		fileWriter.println("\n"+mazeToSolve.toString());
-		// push
+		fileWriter.println("\n" +mazeToSolve.toString());
+			
+		//fileWriter.println("\n"+mazeToSolve.toString());
+		
+
 		MazeLocation nCur;
 		nCur = new MazeLocation(row-1,col);
 
+		//Down
 		if(findPath(nCur,finish)){
-			//push
-			//mazeToSolve.setChar() = 'o';
+			//fileWriter.println("\n"+"checking down"+"\n" +mazeToSolve.toString());
+			path.push(cur);
 			return true;
 		}
+
+		//Right
 		nCur = new MazeLocation(row,col+1);
-		if(findPath(nCur,finish)){
-			//push
-			//mazeToSolve.setChar = 'o';
+		if(findPath(nCur,finish) ){
+			System.out.println("rt");
+			
+			//fileWriter.println("\n"+"checking rt"+"\n"+mazeToSolve.toString());
+		
+			path.push(cur);
+			
 			return true;
 		}
 
-		nCur = new MazeLocation(row+1,col);
-		if(findPath(nCur,finish)){
-			//push
-			//mazeToSolve.setChar = 'o';
-			return true;
-		}
-
-
-
+		//left
 		nCur = new MazeLocation(row,col-1);
-		if(findPath(nCur,finish)){
-			//push
-			//mazeToSolve.setChar = 'o';
+		if(findPath(nCur,finish) ){
+
+			//fileWriter.println("\n"+"checking left"+"\n"+mazeToSolve.toString());
+		
+			path.push(cur);
+			
 			return true;
+		}
+
+		//up
+		nCur = new MazeLocation(row+1,col);
+		if(findPath(nCur,finish) ){
+			//fileWriter.println("\n"+"checking up"+"\n"+mazeToSolve.toString());
+		
+			path.push(cur);
+			
+			return true;
+		}
+
+		// Pointer reached to dead end
+
+		if(mazeToSolve.getChar(row,col)=='o'){
+			mazeToSolve.setChar(row,col,'x');
+			//fileWriter.println("\n"+"dead end"+"\n"+mazeToSolve.toString());
+		
+			
+			
+			return false;
 		}
 
 		
 
-		//
-		
-
-
-
-		
-
-		
-		return false; // so it compiles
+		// if it can't move in either direction.
+		return false; 
 	}
 
 
